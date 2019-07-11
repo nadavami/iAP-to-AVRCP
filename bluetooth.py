@@ -27,6 +27,12 @@ class Bluetooth:
         return self.__adapter.StartDiscovery()
 
     @property
+    def device_name(self):
+        device_object = self.__bus.get(BLUEZ_SERVICE, self.__player[INTERFACE['MEDIA_PLAYER']].Device)
+        device = device_object[INTERFACE['DEVICE']]
+        return device.Alias
+
+    @property
     def current_track(self):
         player = self.__player[INTERFACE['MEDIA_PLAYER']]
         try:
