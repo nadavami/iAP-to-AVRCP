@@ -149,11 +149,3 @@ class Bluetooth:
     def __mediaplayer_handler(self, sender, path, interface, signal, parameters):
         interface, properties, optional = parameters
         print(self.current_track)
-
-
-
-bt = Bluetooth('car1')
-bt.start_discovery()
-
-loop = GLib.MainLoop()
-loop.run()
