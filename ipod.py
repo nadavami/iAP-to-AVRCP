@@ -7,9 +7,8 @@ from logger import log
 # pylint: disable=unused-argument, no-self-use, too-few-public-methods, line-too-long
 class IPod:
     '''Simmulates an iPod'''
-    def __init__(self, name, serial, bluetooth):
+    def __init__(self, serial, bluetooth):
         self.__serial = serial
-        self.name = name
         self.__bluetooth = bluetooth
         self.commands = {
             (MODE['GENERAL'], GENERAL['IDENTIFY']): self.__do_nothing,
@@ -84,7 +83,8 @@ class IPod:
         Payload(payload.mode, response, DEVICE_INFO['IPOD_TYPE']).to_serial(self.__serial)
 
     def __get_ipod_name(self, payload, response):
-        Payload(payload.mode, response, Payload.string(self.name)).to_serial(self.__serial)
+        name = self.__bluetooth.device_name
+        Payload(payload.mode, response, Payload.string(name)).to_serial(self.__serial)
 
     def __get_screen_size(self, payload, response):
         Payload(payload.mode, response, DEVICE_INFO['SCREEN_SIZE']).to_serial(self.__serial)
