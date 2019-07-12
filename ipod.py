@@ -7,9 +7,10 @@ from logger import log
 # pylint: disable=unused-argument, no-self-use, too-few-public-methods, line-too-long
 class IPod:
     '''Simmulates an iPod'''
-    def __init__(self, name, serial):
+    def __init__(self, name, serial, bluetooth):
         self.__serial = serial
         self.name = name
+        self.__bluetooth = bluetooth
         self.commands = {
             (MODE['GENERAL'], GENERAL['IDENTIFY']): self.__do_nothing,
             (MODE['GENERAL'], GENERAL['ENABLE_ADV_REMOTE']): self.__enable_adv_remote,
