@@ -117,23 +117,23 @@ class IPod:
         self.__ack(payload.mode, payload.command, success=True, timeout_ms=0)
 
     def __get_index_of_playing(self, payload, response):
-        track_index_in_queue = Payload.number(1)
+        track_index_in_queue = Payload.number(self.__bluetooth.current_track['track_number'])
         Payload(payload.mode, response, track_index_in_queue).to_serial(self.__serial)
 
     def __get_number_of_tracks_in_queue(self, payload, response):
-        tracks_in_queue = Payload.number(1)
+        tracks_in_queue = Payload.number(self.__bluetooth.current_track['number_of_tracks'])
         Payload(payload.mode, response, tracks_in_queue).to_serial(self.__serial)
 
     def __get_track_title_of_index(self, payload, response):
-        track_title = Payload.string('Hello, world!')
+        track_title = Payload.string(self.__bluetooth.current_track['title'])
         Payload(payload.mode, response, track_title).to_serial(self.__serial)
 
     def __get_track_artist_of_index(self, payload, response):
-        track_artist = Payload.string('Nadav Ami')
+        track_artist = Payload.string(self.__bluetooth.current_track['artist'])
         Payload(payload.mode, response, track_artist).to_serial(self.__serial)
 
     def __get_track_album_of_index(self, payload, response):
-        track_album = Payload.string('Test Album!')
+        track_album = Payload.string(self.__bluetooth.current_track['artist'])
         Payload(payload.mode, response, track_album).to_serial(self.__serial)
 
     def __set_playlist_to_type(self, payload, response):
