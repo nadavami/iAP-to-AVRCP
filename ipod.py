@@ -103,9 +103,13 @@ class IPod:
         self.__ack(payload.mode, payload.command)
 
     def __get_time_and_status(self, payload, response):
-        duration_ms = Payload.number(180000)
-        position_ms = Payload.number(1000)
-        status = ADV_REMOTE['PLAYBACK_STATUS']['STOPPED']
+        track_info = self.__bluetooth.current_track
+        duration_ms = Payload.number(track_info['duration_ms'])
+        position_ms = Payload.number(track_info['position_ms'])
+        if track_info['status'] == 'paused':
+            status = ADV_REMOTE['PLAYBACK_STATUS']['PAUSED']
+        elif track_info['status'] == 'playing':
+            status = ADV_REMOTE['PLAYBACK_STATUS']['PLAYING']
         Payload(payload.mode, response, duration_ms+position_ms+status).to_serial(self.__serial)
 
     def __reset_playlist_selection(self, payload, response):
