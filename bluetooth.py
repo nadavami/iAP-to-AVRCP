@@ -11,12 +11,12 @@ INTERFACE = {
 }
 
 class Bluetooth:
-    def __init__(self, name, change_callback):
+    def __init__(self, name):
         self.__bus = SystemBus()
         self.__adapter = self.__bus.get(BLUEZ_SERVICE, 'hci0')[INTERFACE['ADAPTER']]
         self.__set_alias(name)
         self.__player = None
-        self.__change_callback = change_callback
+        self.__change_callback = None
 
         self.__bus.subscribe(sender=BLUEZ_SERVICE, signal='PropertiesChanged', arg0=INTERFACE['ADAPTER'], signal_fired=self.__adapter_handler)
         self.__bus.subscribe(sender=BLUEZ_SERVICE, signal='PropertiesChanged', arg0=INTERFACE['MEDIA_CONTROL'], signal_fired=self.__mediacontrol_handler)
@@ -26,6 +26,9 @@ class Bluetooth:
         self.__pairable()
         self.__discoverable()
         return self.__adapter.StartDiscovery()
+
+    def set_on_change(self, callback):
+        self.__change_callback = callback
 
     @property
     def device_name(self):
