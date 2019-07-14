@@ -10,6 +10,8 @@ class IPod:
     def __init__(self, serial, bluetooth):
         self.__serial = serial
         self.__bluetooth = bluetooth
+        self.__bluetooth.set_on_change(self.__status_notification)
+        self.__notifications_enabled = False
         self.commands = {
             (MODE['GENERAL'], GENERAL['IDENTIFY']): self.__do_nothing,
             (MODE['GENERAL'], GENERAL['ENABLE_ADV_REMOTE']): self.__enable_adv_remote,
@@ -97,10 +99,19 @@ class IPod:
 
     def __set_status_notifications(self, payload, response):
         if payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['ENABLE']:
+            self.__notifications_enabled = True
             log.info('Notifications enabled.')
         elif payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['DISABLE']:
+            self.__notifications_enabled = False
             log.debug('Notifications disabled.')
         self.__ack(payload.mode, payload.command)
+
+    def __status_notification(self):
+        if self.__notifications_enabled:
+            track_info = self.__bluetooth.current_track
+            position_ms = Payload.number(track_info['position_ms'])
+            response = self.__response(ADV_REMOTE['SET_STATUS_NOTIFICATIONS'])
+            Payload(MODE['ADV_REMOTE'], response, position_ms).to_serial(self.__serial)
 
     def __get_time_and_status(self, payload, response):
         track_info = self.__bluetooth.current_track
