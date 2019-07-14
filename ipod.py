@@ -102,6 +102,16 @@ class IPod:
         self.__bluetooth.shuffle(mode)
         self.__ack(payload.mode, payload.command)
 
+    def __set_repeat(self, payload, response):
+        if payload.parameter == ADV_REMOTE['REPEAT']['SONGS']:
+            mode = 'alltracks'
+        elif payload.parameter == ADV_REMOTE['REPEAT']['ALL_SONGS']:
+            mode = 'group'
+        elif payload.parameter == ADV_REMOTE['REPEAT']['DISABLE']:
+            mode = 'off'
+        self.__bluetooth.repeat(mode)
+        self.__ack(payload.mode, payload.command)
+
     def __set_display_image(self, payload, response):
         self.__ack(payload.mode, payload.command, success=True, timeout_ms=0)
 
