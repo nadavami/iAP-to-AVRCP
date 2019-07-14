@@ -20,6 +20,7 @@ class IPod:
             (MODE['ADV_REMOTE'], ADV_REMOTE['GET_SCREEN_SIZE']): self.__get_screen_size,
             (MODE['ADV_REMOTE'], ADV_REMOTE['SET_SHUFFLE']): self.__set_shuffle,
             (MODE['ADV_REMOTE'], ADV_REMOTE['SET_DISPLAY_IMAGE']): self.__set_display_image,
+            (MODE['ADV_REMOTE'], ADV_REMOTE['SET_PLAYBACK']): self.__set_playback,
             (MODE['ADV_REMOTE'], ADV_REMOTE['SET_STATUS_NOTIFICATIONS']): self.__set_status_notifications,
             (MODE['ADV_REMOTE'], ADV_REMOTE['GET_TIME_AND_STATUS']): self.__get_time_and_status,
             (MODE['ADV_REMOTE'], ADV_REMOTE['RESET_PLAYLIST_SELECTION']): self.__reset_playlist_selection,
@@ -96,6 +97,20 @@ class IPod:
 
     def __set_display_image(self, payload, response):
         self.__ack(payload.mode, payload.command, success=True, timeout_ms=0)
+
+    def __set_playback(self, payload, response):
+        if payload.parameter == ADV_REMOTE['PLAYBACK']['PLAY_PAUSE']:
+            if self.__bluetooth.current_track['status'] == 'playing':
+                self.__bluetooth.pause()
+            elif self.__bluetooth.current_track['status'] == 'paused':
+                self.__bluetooth.play()
+        elif payload.parameter == ADV_REMOTE['PLAYBACK']['STOP']:
+            self.__bluetooth.stop()
+        elif payload.parameter == ADV_REMOTE['PLAYBACK']['NEXT']:
+            self.__bluetooth.next()
+        elif payload.parameter == ADV_REMOTE['PLAYBACK']['PREV']:
+            self.__bluetooth.previous()
+        self.__ack(payload.mode, payload.command)
 
     def __set_status_notifications(self, payload, response):
         if payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['ENABLE']:
