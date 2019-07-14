@@ -153,6 +153,8 @@ class IPod:
             status = ADV_REMOTE['PLAYBACK_STATUS']['PAUSED']
         elif track_info['status'] == 'playing':
             status = ADV_REMOTE['PLAYBACK_STATUS']['PLAYING']
+        else:
+            status = ADV_REMOTE['PLAYBACK_STATUS']['STOPPED']
         Payload(payload.mode, response, duration_ms+position_ms+status).to_serial(self.__serial)
 
     def __reset_playlist_selection(self, payload, response):
