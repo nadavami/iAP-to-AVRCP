@@ -93,6 +93,13 @@ class IPod:
         Payload(payload.mode, response, DEVICE_INFO['SCREEN_SIZE']).to_serial(self.__serial)
 
     def __set_shuffle(self, payload, response):
+        if payload.parameter == ADV_REMOTE['SHUFFLE']['SONGS']:
+            mode = 'alltracks'
+        elif payload.parameter == ADV_REMOTE['SHUFFLE']['ALBUMS']:
+            mode = 'group'
+        else:
+            mode = 'off'
+        self.__bluetooth.shuffle(mode)
         self.__ack(payload.mode, payload.command)
 
     def __set_display_image(self, payload, response):
