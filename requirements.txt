@@ -1,0 +1,2 @@
+pyserial==3.4
+pydbus==0.6.0
