@@ -30,7 +30,8 @@ class IPod:
             (MODE['ADV_REMOTE'], ADV_REMOTE['GET_TRACK_TITLE_OF_INDEX']): self.__get_track_title_of_index,
             (MODE['ADV_REMOTE'], ADV_REMOTE['GET_TRACK_ARTIST_OF_INDEX']): self.__get_track_artist_of_index,
             (MODE['ADV_REMOTE'], ADV_REMOTE['GET_TRACK_ALBUM_OF_INDEX']): self.__get_track_album_of_index,
-            (MODE['ADV_REMOTE'], ADV_REMOTE['SET_PLAYLIST_TO_TYPE']): self.__set_playlist_to_type
+            (MODE['ADV_REMOTE'], ADV_REMOTE['SET_PLAYLIST_TO_TYPE']): self.__set_playlist_to_type,
+            (MODE['ADV_REMOTE'], ADV_REMOTE['SET_TRACK_IN_QUEUE_TO_INDEX']): self.__set_track_in_queue_to_index
         }
 
     def listen(self):
@@ -200,3 +201,7 @@ class IPod:
             log.info('Set playlist to track at index %s', Payload.format_bytes(playlist_index))
         elif playlist_type == ADV_REMOTE['PLAYLIST_TYPE']['COMPOSER']:
             log.info('Set playlist to composer at index %s', Payload.format_bytes(playlist_index))
+
+    def __set_track_in_queue_to_index(self, payload, response):
+        next_track_index = payload.parameter[0:3]
+        log.info('Set track to index %s', Payload.format_bytes(next_track_index))
