@@ -49,7 +49,7 @@ class Bluetooth:
                 'number_of_tracks': player.Track.get('NumberOfTracks', 0),
                 'duration_ms': player.Track.get('Duration', 0),
                 'position_ms': player.Position,
-                'status': player.Status
+                'status': player.Status.lower()
             }
         except GLib.Error:
             log.warning('Can\'t get track info, player not ready.')
