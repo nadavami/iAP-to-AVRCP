@@ -39,20 +39,18 @@ class Bluetooth:
     @property
     def current_track(self):
         player = self.__player[INTERFACE['MEDIA_PLAYER']]
-        try:
-            return {
-                'title': player.Track.get('Title', ''),
-                'album': player.Track.get('Album', ''),
-                'artist': player.Track.get('Artist', ''),
-                'genre': player.Track.get('Genre', ''),
-                'track_number': player.Track.get('TrackNumber', 0),
-                'number_of_tracks': player.Track.get('NumberOfTracks', 0),
-                'duration_ms': player.Track.get('Duration', 0),
-                'position_ms': player.Position,
-                'status': player.Status.lower()
-            }
-        except GLib.Error:
-            log.warning('Can\'t get track info, player not ready.')
+        return {
+            'title': player.Track.get('Title', ''),
+            'album': player.Track.get('Album', ''),
+            'artist': player.Track.get('Artist', ''),
+            'genre': player.Track.get('Genre', ''),
+            'track_number': player.Track.get('TrackNumber', 0),
+            'number_of_tracks': player.Track.get('NumberOfTracks', 0),
+            'duration_ms': player.Track.get('Duration', 0),
+            'position_ms': player.Position,
+            'status': player.Status.lower()
+        }
+
 
     def play(self):
         try:
