@@ -10,4 +10,4 @@ It (is supposed to) act as a bridge between Bluetooth (AVRCP) and the Apple iPod
 No. You're honestly better off just changing the head unit in your car.
 
 ## Can I use it?
-You're free to do [whatever*](LICENCE.txt) you want with this. Just please don't judge me for the terrible code written within. I just wanted to change the damn song. 
+You're free to do [whatever*](LICENSE) you want with this. Just please don't judge me for the terrible code written within. I just wanted to change the damn song. 
