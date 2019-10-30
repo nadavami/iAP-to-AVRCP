@@ -203,5 +203,11 @@ class IPod:
             log.info('Set playlist to composer at index %s', Payload.format_bytes(playlist_index))
 
     def __set_track_in_queue_to_index(self, payload, response):
-        next_track_index = payload.parameter[0:3]
+        next_track_index = int.from_bytes(payload.parameter[0:4], 'big')
+        track_info = self.__bluetooth.current_track
+        if next_track_index > track_info['track_number']:
+            self.__bluetooth.next()
+        else:
+            self.__bluetooth.previous()
         log.info('Set track to index %s', Payload.format_bytes(next_track_index))
+        self.__ack(payload.mode, payload.command)
