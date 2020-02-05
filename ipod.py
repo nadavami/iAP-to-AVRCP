@@ -188,17 +188,17 @@ class IPod:
 
     def __get_track_title_of_index(self, payload, response):
         track_title = Payload.string(self.__bluetooth.current_track['title'])
-        log.debug('Get track title for %s. Sent: ', Payload.format_bytes(payload.parameter), track_title)
+        log.debug('Get track title for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_title)
         Payload(payload.mode, response, track_title).to_serial(self.__serial)
 
     def __get_track_artist_of_index(self, payload, response):
         track_artist = Payload.string(self.__bluetooth.current_track['artist'])
-        log.debug('Get track artist for %s. Sent: ', Payload.format_bytes(payload.parameter), track_artist)
+        log.debug('Get track artist for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_artist)
         Payload(payload.mode, response, track_artist).to_serial(self.__serial)
 
     def __get_track_album_of_index(self, payload, response):
         track_album = Payload.string(self.__bluetooth.current_track['artist'])
-        log.debug('Get track album for %s. Sent: ', Payload.format_bytes(payload.parameter), track_album)
+        log.debug('Get track album for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_album)
         Payload(payload.mode, response, track_album).to_serial(self.__serial)
 
     def __set_playlist_to_type(self, payload, response):
