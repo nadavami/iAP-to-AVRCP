@@ -94,6 +94,7 @@ class IPod:
         Payload(payload.mode, response, DEVICE_INFO['SCREEN_SIZE']).to_serial(self.__serial)
 
     def __set_shuffle(self, payload, response):
+        self.__ack(payload.mode, payload.command)
         if payload.parameter == ADV_REMOTE['SHUFFLE']['SONGS']:
             mode = 'alltracks'
         elif payload.parameter == ADV_REMOTE['SHUFFLE']['ALBUMS']:
@@ -101,9 +102,9 @@ class IPod:
         else:
             mode = 'off'
         self.__bluetooth.shuffle(mode)
-        self.__ack(payload.mode, payload.command)
 
     def __set_repeat(self, payload, response):
+        self.__ack(payload.mode, payload.command)
         if payload.parameter == ADV_REMOTE['REPEAT']['SONGS']:
             mode = 'alltracks'
         elif payload.parameter == ADV_REMOTE['REPEAT']['ALL_SONGS']:
@@ -111,12 +112,12 @@ class IPod:
         elif payload.parameter == ADV_REMOTE['REPEAT']['DISABLE']:
             mode = 'off'
         self.__bluetooth.repeat(mode)
-        self.__ack(payload.mode, payload.command)
 
     def __set_display_image(self, payload, response):
         self.__ack(payload.mode, payload.command, success=True, timeout_ms=0)
 
     def __set_playback(self, payload, response):
+        self.__ack(payload.mode, payload.command)
         if payload.parameter == ADV_REMOTE['PLAYBACK']['PLAY_PAUSE']:
             if self.__bluetooth.current_track['status'] == 'playing':
                 self.__bluetooth.pause()
@@ -128,16 +129,15 @@ class IPod:
             self.__bluetooth.next()
         elif payload.parameter == ADV_REMOTE['PLAYBACK']['PREV']:
             self.__bluetooth.previous()
-        self.__ack(payload.mode, payload.command)
 
     def __set_status_notifications(self, payload, response):
+        self.__ack(payload.mode, payload.command)
         if payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['ENABLE']:
             self.__notifications_enabled = True
             log.info('Notifications enabled.')
         elif payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['DISABLE']:
             self.__notifications_enabled = False
             log.debug('Notifications disabled.')
-        self.__ack(payload.mode, payload.command)
 
     def __status_notification(self):
         if self.__notifications_enabled:
@@ -203,6 +203,7 @@ class IPod:
             log.info('Set playlist to composer at index %s', Payload.format_bytes(playlist_index))
 
     def __set_track_in_queue_to_index(self, payload, response):
+        self.__ack(payload.mode, payload.command)
         next_track_index = int.from_bytes(payload.parameter[0:4], 'big')
         track_info = self.__bluetooth.current_track
         if next_track_index > track_info['track_number']:
@@ -210,4 +211,3 @@ class IPod:
         else:
             self.__bluetooth.previous()
         log.info('Set track to index %s', Payload.format_bytes(next_track_index))
-        self.__ack(payload.mode, payload.command)
