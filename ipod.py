@@ -84,13 +84,16 @@ class IPod:
         self.__ack(payload.mode, payload.command)
 
     def __get_ipod_type(self, payload, response):
+        log.info('iPod type requested.')
         Payload(payload.mode, response, DEVICE_INFO['IPOD_TYPE']).to_serial(self.__serial)
 
     def __get_ipod_name(self, payload, response):
+        log.info('iPod name requested.')
         name = self.__bluetooth.device_name
         Payload(payload.mode, response, Payload.string(name)).to_serial(self.__serial)
 
     def __get_screen_size(self, payload, response):
+        log.info('iPod screen size requested.')
         Payload(payload.mode, response, DEVICE_INFO['SCREEN_SIZE']).to_serial(self.__serial)
 
     def __set_shuffle(self, payload, response):
@@ -101,6 +104,7 @@ class IPod:
             mode = 'group'
         else:
             mode = 'off'
+        log.info('Shuffle mode set to %s', mode)
         self.__bluetooth.shuffle(mode)
 
     def __set_repeat(self, payload, response):
@@ -111,23 +115,30 @@ class IPod:
             mode = 'group'
         elif payload.parameter == ADV_REMOTE['REPEAT']['DISABLE']:
             mode = 'off'
+        log.info('Repeat mode set to %s', mode)
         self.__bluetooth.repeat(mode)
 
     def __set_display_image(self, payload, response):
+        log.info('Setting display image')
         self.__ack(payload.mode, payload.command, success=True, timeout_ms=0)
 
     def __set_playback(self, payload, response):
         self.__ack(payload.mode, payload.command)
         if payload.parameter == ADV_REMOTE['PLAYBACK']['PLAY_PAUSE']:
             if self.__bluetooth.current_track['status'] == 'playing':
+                log.info('Pause playback.')
                 self.__bluetooth.pause()
             elif self.__bluetooth.current_track['status'] == 'paused':
+                log.info('Resume playback.')
                 self.__bluetooth.play()
         elif payload.parameter == ADV_REMOTE['PLAYBACK']['STOP']:
+            log.info('Stop playback.')
             self.__bluetooth.stop()
         elif payload.parameter == ADV_REMOTE['PLAYBACK']['NEXT']:
+            log.info('Next track.')
             self.__bluetooth.next()
         elif payload.parameter == ADV_REMOTE['PLAYBACK']['PREV']:
+            log.info('Previous track.')
             self.__bluetooth.previous()
 
     def __set_status_notifications(self, payload, response):
@@ -141,6 +152,7 @@ class IPod:
 
     def __status_notification(self):
         if self.__notifications_enabled:
+            log.debug('Playback status update sent.')
             track_info = self.__bluetooth.current_track
             position_ms = Payload.number(track_info['position_ms'])
             response = self.__response(ADV_REMOTE['SET_STATUS_NOTIFICATIONS'])
@@ -176,14 +188,17 @@ class IPod:
 
     def __get_track_title_of_index(self, payload, response):
         track_title = Payload.string(self.__bluetooth.current_track['title'])
+        log.debug('Get track title for %s. Sent: ', Payload.format_bytes(payload.parameter), track_title)
         Payload(payload.mode, response, track_title).to_serial(self.__serial)
 
     def __get_track_artist_of_index(self, payload, response):
         track_artist = Payload.string(self.__bluetooth.current_track['artist'])
+        log.debug('Get track artist for %s. Sent: ', Payload.format_bytes(payload.parameter), track_artist)
         Payload(payload.mode, response, track_artist).to_serial(self.__serial)
 
     def __get_track_album_of_index(self, payload, response):
         track_album = Payload.string(self.__bluetooth.current_track['artist'])
+        log.debug('Get track album for %s. Sent: ', Payload.format_bytes(payload.parameter), track_album)
         Payload(payload.mode, response, track_album).to_serial(self.__serial)
 
     def __set_playlist_to_type(self, payload, response):
