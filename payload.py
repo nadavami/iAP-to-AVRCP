@@ -37,7 +37,6 @@ class Payload:
         '''Creates a payload from the serial port'''
         header = serial.read(2)
         if header != HEADER:
-            log.warning('Invalid payload, bad header: %s', header)
             raise PayloadError('Invalid payload, bad header.')
 
         length = int.from_bytes(serial.read(1), byteorder='big')
@@ -47,19 +46,10 @@ class Payload:
 
         body = serial.read(length)
         checksum = serial.read(1)
-        log.debug('Received: %s %s %s %s %s %s',
-                  Payload.format_bytes(header),
-                  Payload.format_bytes(length),
-                  Payload.format_bytes(body[0]),
-                  Payload.format_bytes(body[1:3]),
-                  Payload.format_bytes(body[3:]),
-                  Payload.format_bytes(checksum))
-
         payload = Payload(bytes([body[0]]), body[1:3], body[3:])
 
         # pylint: disable=W0212
         if checksum != payload.__checksum():
-            log.error('Invalid payload, bad checksum: %s', header)
             raise PayloadError('Invalid payload, bad checksum.')
         return payload
 
@@ -67,7 +57,6 @@ class Payload:
         '''Writes a payload to the serial port'''
         if not self.is_long:
             payload_bytes = self.__encode()
-            log.info('Sent: %s', Payload.format_bytes(payload_bytes))
             serial.write(payload_bytes)
         return self
 
