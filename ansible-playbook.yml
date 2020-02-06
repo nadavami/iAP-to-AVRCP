@@ -1,0 +1,60 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Update packages
+      apt:
+        name: "*"
+        state: latest
+
+    - name: Enable UART1, USB Host and analog audio
+      lineinfile:
+        path: /boot/armbianEnv.txt
+        regexp: '^overlays='
+        line: overlays=uart1 usbhost2 usbhost3 analog-codec
+
+    - name: Install packages
+      apt:
+        name:
+          - pulseaudio-module-bluetooth
+          - bluez-tools
+          - python3
+
+    - name: Add root user to audio groups
+      user:
+        name: root
+        groups:
+          - pulse
+          - lp
+          - audio
+
+    - name: Add pulse  user to audio groups
+      user:
+        name: pulse
+        groups:
+          - lp
+          - audio
+
+    - name: Set pulseaudio extra arguments
+      lineinfile:
+        path: /etc/pulse/client.conf
+        regexp: 'extra-arguments ='
+        line: extra-arguments = --exit-idle-time=-1 --log-target=syslog
+
+    - name: Enable bluetooth device
+      shell: hciconfig hci0 up
+
+    - name: Set bluetooth device class to car audio
+      shell: hciconfig hci0 class 0x200420
+
+    - name: Clone repo on pi
+      git:
+        repo: https://github.com/nadavami/iAP-to-AVRCP.git
+        dest: /root/iAP-to-AVRCP
+        depth: 1
+
+    - name: Install pip packages 
+      pip:
+        requirements: /root/iAP-to-AVRCP/requirements.txt
+        executable: pip3
