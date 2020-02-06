@@ -2,8 +2,8 @@
 import threading
 import serial
 from gi.repository import GLib
-from bluetooth import Bluetooth
-from ipod import IPod
+from modules.bluetooth import Bluetooth
+from modules.ipod import IPod
 
 # Car name shown via bluetooth
 CAR_NAME = 'Carputer'
