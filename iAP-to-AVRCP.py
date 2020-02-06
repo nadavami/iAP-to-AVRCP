@@ -4,7 +4,6 @@ import serial
 from gi.repository import GLib
 from bluetooth import Bluetooth
 from ipod import IPod
-from logger import log
 
 # Car name shown via bluetooth
 CAR_NAME = 'Carputer'
