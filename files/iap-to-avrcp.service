@@ -1,0 +1,10 @@
+[Unit]
+Description=iPod to Bluetooth
+After=bt-agent.service pulseaudio.service
+
+[Service]
+ExecStart=/root/iAP-to-AVRCP/iAP-to-AVRCP.py
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

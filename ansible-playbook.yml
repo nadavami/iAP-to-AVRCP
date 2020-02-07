@@ -3,23 +3,35 @@
   become: true
 
   tasks:
+
+    - name: Set hostname
+      hostname:
+        name: carputer
+
     - name: Update packages
       apt:
         name: "*"
         state: latest
 
-    - name: Enable UART1, USB Host and analog audio
+    - name: Enable UART1 and analog audio
       lineinfile:
         path: /boot/armbianEnv.txt
         regexp: '^overlays='
-        line: overlays=uart1 usbhost2 usbhost3 analog-codec
+        line: overlays=uart1 analog-codec
+      register: enable_uart
+
+    - name: Reboot after uart enabled
+      reboot:
+      when: enable_uart.changed
 
     - name: Install packages
       apt:
         name:
+          - python3
+          - python3-setuptools
+          - python3-pip
           - pulseaudio-module-bluetooth
           - bluez-tools
-          - python3
 
     - name: Add root user to audio groups
       user:
@@ -36,17 +48,24 @@
           - lp
           - audio
 
-    - name: Set pulseaudio extra arguments
-      lineinfile:
-        path: /etc/pulse/client.conf
-        regexp: 'extra-arguments ='
-        line: extra-arguments = --exit-idle-time=-1 --log-target=syslog
-
-    - name: Enable bluetooth device
-      shell: hciconfig hci0 up
+    - name: Enable blueooth in pulseaudio system mode
+      blockinfile:
+        path: /etc/pulse/system.pa
+        block: |
+          .ifexists module-bluetooth-discover.so
+          load-module module-bluetooth-discover
+          .endif
 
     - name: Set bluetooth device class to car audio
-      shell: hciconfig hci0 class 0x200420
+      lineinfile: 
+        path: /etc/bluetooth/main.conf
+        regexp: 'Class ='
+        line: Class = 0x200420
+
+    - name: Copy systemd definitions
+      copy:
+        src: files/
+        dest: /etc/systemd/system/
 
     - name: Clone repo on pi
       git:
@@ -57,4 +76,33 @@
     - name: Install pip packages 
       pip:
         requirements: /root/iAP-to-AVRCP/requirements.txt
-        executable: pip3
+        executable: /usr/bin/pip3
+
+    - name: Disable wait-online service 
+      systemd:
+        name: NetworkManager-wait-online.service
+        enabled: False
+
+    - name: Start and enable pulseaudio
+      systemd:
+        name: pulseaudio
+        state: started
+        enabled: True
+
+    - name: Start and enable bluetooth
+      systemd:
+        name: bluetooth
+        state: started
+        enabled: True
+
+    - name: Start and enable bt-agent
+      systemd:
+        name: bt-agent
+        state: started
+        enabled: True
+
+    - name: Start and enable iap-to-avrcp
+      systemd:
+        name: iap-to-avrcp
+        state: started
+        enabled: True
