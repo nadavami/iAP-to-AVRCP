@@ -81,7 +81,7 @@ class Bluetooth:
         if setting not in shuffle_settings:
             return
         try:
-           self.__player[INTERFACE['MEDIA_PLAYER']].Shuffle = setting
+            self.__player[INTERFACE['MEDIA_PLAYER']].Shuffle = setting
         except GLib.Error:
             log.warning('Can\'t set shuffle mode to %s, player not ready.', setting)
 
@@ -90,7 +90,7 @@ class Bluetooth:
         if setting not in repeat_settings:
             return
         try:
-           self.__player[INTERFACE['MEDIA_PLAYER']].Repeat = setting
+            self.__player[INTERFACE['MEDIA_PLAYER']].Repeat = setting
         except GLib.Error:
             log.warning('Can\'t set repeat mode to %s, player not ready.', setting)
 
@@ -134,13 +134,16 @@ class Bluetooth:
                 log.warning('Can\'t connect to device %s.', device.Alias)
 
     def __init_player(self, player_path):
-       self.__player = self.__bus.get(BLUEZ_SERVICE, player_path)
+        self.__player = self.__bus.get(BLUEZ_SERVICE, player_path)
 
     def __adapter_handler(self, sender, path, interface, signal, parameters):
         interface, properties, optional = parameters
         if 'Discovering' in properties:
             log.info('Discovering active. Looking for devices.')
+        try:
             self.__connect_to_paired_media_device()
+        except:
+            log.warning('No paired devices found')
 
     def __mediacontrol_handler(self, sender, path, interface, signal, parameters):
         interface, properties, optional = parameters
