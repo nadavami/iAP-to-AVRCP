@@ -1,6 +1,5 @@
 '''Handles construction of payloads'''
 from consts import HEADER
-from logger import log
 
 class Payload:
     '''Handles construction of payloads'''
