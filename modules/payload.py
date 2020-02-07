@@ -1,5 +1,5 @@
 '''Handles construction of payloads'''
-from consts import HEADER
+from modules.consts import HEADER
 
 class Payload:
     '''Handles construction of payloads'''
