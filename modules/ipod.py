@@ -1,8 +1,8 @@
 '''Simmulates an iPod'''
 import time
-from payload import Payload, PayloadError
-from consts import DEVICE_INFO, MODE, ACK, GENERAL, ADV_REMOTE
-from logger import log
+from modules.payload import Payload, PayloadError
+from modules.consts import DEVICE_INFO, MODE, ACK, GENERAL, ADV_REMOTE
+from modules.logger import log
 
 # pylint: disable=unused-argument, no-self-use, too-few-public-methods, line-too-long
 class IPod:

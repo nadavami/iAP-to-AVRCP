@@ -1,6 +1,6 @@
 from pydbus import SystemBus
 from gi.repository import GLib
-from logger import log
+from modules.logger import log
 
 BLUEZ_SERVICE = 'org.bluez'
 INTERFACE = {
