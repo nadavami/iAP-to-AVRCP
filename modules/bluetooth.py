@@ -23,6 +23,7 @@ class Bluetooth:
         self.__bus.subscribe(sender=BLUEZ_SERVICE, signal='PropertiesChanged', arg0=INTERFACE['MEDIA_PLAYER'], signal_fired=self.__mediaplayer_handler)
 
     def start_discovery(self):
+        self.__powered()
         self.__pairable()
         self.__discoverable()
         return self.__adapter.StartDiscovery()
@@ -100,6 +101,9 @@ class Bluetooth:
 
     def __set_alias(self, alias):
         self.__adapter.Alias = alias
+
+    def __powered(self):
+        self.__adapter.Powered = True
 
     def __discoverable(self, timeout=90):
         self.__adapter.Discoverable = True
