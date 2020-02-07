@@ -7,7 +7,7 @@ from modules.ipod import IPod
 
 # Car name shown via bluetooth
 CAR_NAME = 'Carputer'
-SERIAL_PORT = '/dev/ttyUSB0'
+SERIAL_PORT = '/dev/ttyS1'
 
 
 serial_connection = serial.Serial(SERIAL_PORT, 38400)
