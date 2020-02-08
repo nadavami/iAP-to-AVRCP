@@ -1,5 +1,6 @@
 '''Handles construction of payloads'''
 from modules.consts import HEADER
+from modules.logger import log
 
 class Payload:
     '''Handles construction of payloads'''
@@ -46,6 +47,7 @@ class Payload:
         body = serial.read(length)
         checksum = serial.read(1)
         payload = Payload(bytes([body[0]]), body[1:3], body[3:])
+        log.debug('[RECEIVED] - %s %s', Payload.format_bytes(body), Payload.format_bytes(checksum))
 
         # pylint: disable=W0212
         if checksum != payload.__checksum():
@@ -56,6 +58,7 @@ class Payload:
         '''Writes a payload to the serial port'''
         if not self.is_long:
             payload_bytes = self.__encode()
+            log.debug('[SENT] - %s', self.format_bytes(payload_bytes))
             serial.write(payload_bytes)
         return self
 
