@@ -120,7 +120,7 @@ class Bluetooth:
 
     def __get_paired_media_devices(self):
         devices = self.__get_devices()
-        paired_media_filter = lambda item: item[1][INTERFACE['DEVICE']]['Paired'] == True and INTERFACE['MEDIA_CONTROL'] in item[1]
+        paired_media_filter = lambda item: item[1][INTERFACE['DEVICE']]['Paired'] and INTERFACE['MEDIA_CONTROL'] in item[1]
         return dict(filter(paired_media_filter, devices.items()))
 
     def __connect_to_paired_media_device(self):
