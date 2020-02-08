@@ -51,7 +51,7 @@ class IPod:
             response = self.__response(payload.command)
             self.commands[(payload.mode, payload.command)](payload, response)
         except KeyError:
-            log.debug(
+            log.warning(
                 'Unregistered command %s %s %s',
                 Payload.format_bytes(payload.mode),
                 Payload.format_bytes(payload.command),
@@ -148,11 +148,11 @@ class IPod:
             log.info('Notifications enabled.')
         elif payload.parameter == ADV_REMOTE['STATUS_NOTIFICATIONS']['DISABLE']:
             self.__notifications_enabled = False
-            log.debug('Notifications disabled.')
+            log.info('Notifications disabled.')
 
     def __status_notification(self):
         if self.__notifications_enabled:
-            log.debug('Playback status update sent.')
+            log.info('Playback status update sent.')
             track_info = self.__bluetooth.current_track
             position_ms = Payload.number(track_info['position_ms'])
             response = self.__response(ADV_REMOTE['SET_STATUS_NOTIFICATIONS'])
@@ -188,17 +188,17 @@ class IPod:
 
     def __get_track_title_of_index(self, payload, response):
         track_title = Payload.string(self.__bluetooth.current_track['title'])
-        log.debug('Get track title for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_title)
+        log.info('Get track title for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_title)
         Payload(payload.mode, response, track_title).to_serial(self.__serial)
 
     def __get_track_artist_of_index(self, payload, response):
         track_artist = Payload.string(self.__bluetooth.current_track['artist'])
-        log.debug('Get track artist for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_artist)
+        log.info('Get track artist for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_artist)
         Payload(payload.mode, response, track_artist).to_serial(self.__serial)
 
     def __get_track_album_of_index(self, payload, response):
         track_album = Payload.string(self.__bluetooth.current_track['artist'])
-        log.debug('Get track album for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_album)
+        log.info('Get track album for %s. Sent: %s', Payload.format_bytes(payload.parameter), track_album)
         Payload(payload.mode, response, track_album).to_serial(self.__serial)
 
     def __set_playlist_to_type(self, payload, response):

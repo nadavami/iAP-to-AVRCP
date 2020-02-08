@@ -129,6 +129,7 @@ class Bluetooth:
         device_object = self.__bus.get(BLUEZ_SERVICE, device_path)
         device = device_object[INTERFACE['DEVICE']]
         if device.Connected:
+            log.info('Connected to device %s.', device.Name)
             player_path = device_object[INTERFACE['MEDIA_CONTROL']].Player
             self.__init_player(player_path)
         else:
@@ -147,7 +148,7 @@ class Bluetooth:
         try:
             self.__connect_to_paired_media_device()
         except:
-            log.warning('No paired devices found')
+            log.info('No paired devices found.')
 
     def __mediacontrol_handler(self, sender, path, interface, signal, parameters):
         interface, properties, optional = parameters
