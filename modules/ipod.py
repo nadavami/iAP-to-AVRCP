@@ -51,12 +51,7 @@ class IPod:
             response = self.__response(payload.command)
             self.commands[(payload.mode, payload.command)](payload, response)
         except KeyError:
-            log.warning(
-                'Unregistered command %s %s %s',
-                Payload.format_bytes(payload.mode),
-                Payload.format_bytes(payload.command),
-                Payload.format_bytes(payload.parameter)
-            )
+            log.warning('Unknown command.')
 
     def __response(self, command):
         '''Generate response command for a given command'''
