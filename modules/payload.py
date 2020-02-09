@@ -60,6 +60,8 @@ class Payload:
             payload_bytes = self.__encode()
             log.debug('[SENT] - %s', self.format_bytes(payload_bytes))
             serial.write(payload_bytes)
+        else:
+            log.debug('[DROPPED LONG PAYLOAD]')
         return self
 
     def __length(self):
