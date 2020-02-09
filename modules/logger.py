@@ -15,9 +15,7 @@ serial_debug_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
-
-serial_formatter = logging.Formatter('%(asctime)s - %(message)s')
-serial_debug_handler.setFormatter(serial_formatter)
+serial_debug_handler.setFormatter(formatter)
 
 log.addHandler(console_handler)
 log.addHandler(file_handler)
