@@ -13,11 +13,11 @@
         name: "*"
         state: latest
 
-    - name: Enable UART1 and analog audio
+    - name: Enable USB OTG, UART1 and analog audio
       lineinfile:
         path: /boot/armbianEnv.txt
         regexp: '^overlays='
-        line: overlays=uart1 analog-codec
+        line: overlays=usbhost0 uart1 analog-codec
       register: enable_uart
 
     - name: Reboot after uart enabled

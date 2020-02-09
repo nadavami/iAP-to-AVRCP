@@ -31,3 +31,7 @@ You're free to do whatever<sup>[1]</sup> you want with this. All I ask is that y
 6. Edit hosts in this project file to IP of Orange Pi
 7. Run playbook (ansbile-playbook ansible-playbook.yml -u root -k -i hosts)
 
+## Debugging
+The Ansible playbook above enables the USB OTG port and by default, armbian exposes a serial port. This is the easiest way to connect when the device is out of WiFi range.
+The software also writes logs to `/var/log/iap-to-avrcp.log` and `/var/log/iap-to-avrcp.serial.log`.
+
