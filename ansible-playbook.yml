@@ -41,14 +41,14 @@
           - lp
           - audio
 
-    - name: Add pulse  user to audio groups
+    - name: Add pulse user to audio groups
       user:
         name: pulse
         groups:
           - lp
           - audio
 
-    - name: Enable blueooth in pulseaudio system mode
+    - name: Enable bluetooth in pulseaudio system mode
       blockinfile:
         path: /etc/pulse/system.pa
         block: |
