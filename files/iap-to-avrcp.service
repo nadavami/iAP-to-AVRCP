@@ -1,6 +1,6 @@
 [Unit]
 Description=iPod to Bluetooth
-After=bt-agent.service pulseaudio.service
+After=bt-agent.service bluealsa-aplay.service
 
 [Service]
 ExecStart=/root/iAP-to-AVRCP/iAP-to-AVRCP.py

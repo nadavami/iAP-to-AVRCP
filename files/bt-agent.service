@@ -1,9 +1,13 @@
 [Unit]
-Description=Bluetooth Auth Agent
+Description=A2DP Bluetooth Agent
+After=bluetooth.service
+Wants=bluetooth.service
 
 [Service]
-ExecStart=/usr/bin/bt-agent -c NoInputNoOutput
-Type=simple
+ExecStart=/root/iAP-to-AVRCP/a2dp-agent
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=A2DP-Agent
 
 [Install]
 WantedBy=multi-user.target

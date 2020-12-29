@@ -1,0 +1,12 @@
+[Unit]
+Description=BlueALSA
+After=bluetooth.service syslog.service
+
+[Service]
+ExecStart=/usr/bin/bluealsa
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=BlueALSA
+
+[Install]
+WantedBy=multi-user.target
