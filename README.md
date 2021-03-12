@@ -1,7 +1,7 @@
 # iAP to AVRCP
 
 ## What is this?
-This is my terrible answer to not being able to change the current song from my steering wheel in my 2012 Hyundai Elantra.
+This is my terrible answer to not being able to change the current song from my steering wheel in my 2012 Hyundai Elantra. You can find out more [here](https://nadav.ca/2021/01/29/car-stereo-part-1/), [here](https://nadav.ca/2021/02/11/car-stereo-part-2/), and [here](https://nadav.ca/2021/03/06/car-stereo-part-3/).
 
 ## What does it do?
 It (is supposed to) act as a bridge between Bluetooth (AVRCP) and the Apple iPod Accessory Protocol (iAP). 
