@@ -46,7 +46,10 @@ class Payload:
 
         body = serial.read(length)
         checksum = serial.read(1)
-        payload = Payload(bytes([body[0]]), body[1:3], body[3:])
+        if body[0] == 0x04:
+            payload = Payload(bytes([body[0]]), body[1:3], body[3:])
+        else:
+            payload = Payload(bytes([body[0]]), body[1:2], body[2:])
         log.debug('[RECEIVED] - %s %s', Payload.format_bytes(body), Payload.format_bytes(checksum))
 
         # pylint: disable=W0212
